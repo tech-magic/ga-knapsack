@@ -1,0 +1,83 @@
+# My implementation contains the solution for the
+# following knapsack problem.
+#
+# Item No | 1| 2| 3| 4| 5| 6| 7| 8| 9| 10
+# Weight  |14|26|19|45| 5|25|34|18|30| 12 
+# Value   |20|24|18|70|14|23|50|17|41| 21
+#
+# Maximum weight supported by the Knapsack (Capacity) 100
+#
+# I'm using a BitVector of length 10 to represent chromosomes
+# So each chromosome will have 10 genes
+# 
+# Steady-state model is used for the execution of GA
+# There are 50 generations
+# There are 20 chromosomes in a generation
+# Tournament Selection is used during selection
+# One-point crossover is used during crossover
+# Crossover probability is 0.8
+# Mutation probability is 0.01
+#
+#
+
+# Basic Settings
+verbosity	= 0
+breedthreads	= 1
+evalthreads	= 1
+seed.0		= 4357
+
+# Object responsible for maintaining the state of entire genetic algorithm
+state		= ec.simple.SimpleEvolutionState
+
+# Definition of Population
+pop		= ec.Population
+init		= ec.simple.SimpleInitializer
+finish		= ec.simple.SimpleFinisher
+breed		= ec.simple.SimpleBreeder
+eval		= ec.simple.SimpleEvaluator
+stat		= ec.simple.SimpleStatistics
+exch		= ec.simple.SimpleExchanger
+
+# No of generations
+generations		= 50
+quit-on-run-complete	= true
+checkpoint		= false
+prefix			= ec
+checkpoint-modulo	= 1
+
+# Output file to write statistics
+stat.file		= $out.stat
+
+# Settings for defining a generation 
+pop.subpops		= 1
+pop.subpop.0		= ec.Subpopulation
+pop.subpop.0.size 		= 20
+pop.subpop.0.duplicate-retries 	= 0
+pop.subpop.0.species 		= ec.vector.VectorSpecies
+
+# Nature of a Chromosome
+pop.subpop.0.species.ind	= ec.vector.BitVectorIndividual
+pop.subpop.0.species.genome-size	= 10
+pop.subpop.0.species.crossover-type	= one
+
+# Crossover and mutation probabilities
+pop.subpop.0.species.crossover-prob	= 0.8
+pop.subpop.0.species.mutation-prob	= 0.01
+
+# Fitness configuration
+pop.subpop.0.species.fitness 		= ec.simple.SimpleFitness
+
+# Breeding pipe line
+pop.subpop.0.species.pipe			= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0		= ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1	= ec.select.TournamentSelection
+select.tournament.size		= 2
+
+# Class specific to our problem, containing our custom fitness function
+eval.problem		= ec.app.assignment.KnapSack
+
+
+
+
+
