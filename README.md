@@ -1,4 +1,4 @@
-# Implementing Knapsack Problem using Genetic Algorithms
+# A Solution for Knapsack Problem using Genetic Algorithms
 
 ## About the Project
 
